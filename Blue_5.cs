@@ -153,7 +153,7 @@ namespace Lab_7
 
             protected override double GetTeamStrength()
             {   
-                int sum = 0;
+                double sum = 0;
                 int count = 0;
                 foreach (var sportsman in Sportsmen)
                 {
@@ -173,8 +173,8 @@ namespace Lab_7
 
             protected override double GetTeamStrength()
             {
-                int sumPlaces = 0;
-                int productPlaces = 1;
+                double sumPlaces = 0;
+                double productPlaces = 1;
                 int count = 0;
                 
                 foreach (var sportsman in Sportsmen)
@@ -187,7 +187,7 @@ namespace Lab_7
                     }
                 }
                 
-                return productPlaces == 0 ? 0 : 100*sumPlaces*count/productPlaces;
+                return productPlaces == 0 ? 0 : (100*sumPlaces*count)/productPlaces;
             }
         }
     }
