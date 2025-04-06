@@ -155,9 +155,9 @@ namespace Lab_7
             {   
                 int sum = 0;
                 int count = 0;
-                foreach (var sportsman in _sportsmen)
+                foreach (var sportsman in Sportsmen)
                 {
-                    if (sportsman != null && sportsman.Place > 0)
+                    if (sportsman != null)
                     {
                         sum += sportsman.Place;
                         count++;
@@ -177,9 +177,9 @@ namespace Lab_7
                 int productPlaces = 1;
                 int count = 0;
                 
-                foreach (var sportsman in _sportsmen)
+                foreach (var sportsman in Sportsmen)
                 {
-                    if (sportsman != null && sportsman.Place > 0)
+                    if (sportsman != null)
                     {
                         sumPlaces += sportsman.Place;
                         productPlaces *= sportsman.Place;
