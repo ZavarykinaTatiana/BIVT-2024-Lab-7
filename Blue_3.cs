@@ -9,8 +9,6 @@ namespace Lab_7 {
             private string _name;
             private string _surname;
             protected int[] _penaltyTimes; // массив штрафных штук за каждый матч
-            private int _matchesThisPlayer; // колво сыгранных матчей
-            private bool _isExpelled;
 
 
             // публичные свойства
@@ -32,39 +30,26 @@ namespace Lab_7 {
                 }
             }
 
-            public virtual bool IsExpelled {
-                get {
-                    if (_penaltyTimes == null || _penaltyTimes.Length == 0) return false;
-                    return _isExpelled;
-                }
-            }
+            public virtual bool IsExpelled => _penaltyTimes.Any(t => t == 10);
 
             // конструктор
             public Participant(string name, string surname) {
                 _name = name;
                 _surname = surname;
                 _penaltyTimes = new int[0];
-                _matchesThisPlayer = 0;
-                _isExpelled = true; // не удален
             }
 
             // методы
             public virtual void PlayMatch(int time) {
                 if (_penaltyTimes == null) return;
-                if (time == 10) _isExpelled = false;
-                if (_matchesThisPlayer < _penaltyTimes.Length) {
-                    _penaltyTimes[_matchesThisPlayer] = time;
-                    _matchesThisPlayer++;
-                } else {
-                    Array.Resize(ref _penaltyTimes, _matchesThisPlayer + 1);
-                    _penaltyTimes[_matchesThisPlayer] = time;
-                    _matchesThisPlayer++;
-                }
+                Array.Resize(ref _penaltyTimes, _penaltyTimes.Length + 1);
+                _penaltyTimes[_penaltyTimes.Length - 1] = time;
+                            
             }
 
             public static void Sort(Participant[] array) {
-                if (array == null) return;
-                for (int i = 0; i < array.Length-1; i++) {
+                if (array == null || array.Length == 0) return;
+                for (int i = 0; i < array.Length; i++) {
                     for (int j = 0; j < array.Length-i-1; j++) {
                         if (array[j].Total > array[j + 1].Total) {
                             Participant tmp = array[j];
@@ -75,9 +60,7 @@ namespace Lab_7 {
                 }
             }
             public void Print() {
-                if (!_isExpelled) {
-                    Console.WriteLine($"{_name} {_surname}, Штрафное время: {Total} мин");
-                }
+                Console.WriteLine($"{_name} {_surname}, Штрафное время: {Total} мин");
             }
         }
 
@@ -119,11 +102,11 @@ namespace Lab_7 {
                 get
                 {
                     if (_penaltyTimes == null) return false;
-                    bool condition1 = _penaltyTimes.Any(p => p == 10);
-                    double average = _totalPenaltyTime / (double)_playersCount;
+                    if ( _penaltyTimes.Any(p => p == 10)) return true;
+                    double average = _totalPenaltyTime / _playersCount;
                     bool condition2 = Total > average * 0.1;
                     
-                    return condition1 || condition2;
+                    return condition2;
                 }
             }
 

@@ -103,15 +103,6 @@ namespace Lab_7
                 foreach (var sportsman in sportsmen) Add(sportsman);
             }
 
-            public virtual void Print()
-            {
-                Console.WriteLine($"Команда: {_name}, Очки: {SummaryScore}, Лучшее место: {TopPlace}");
-                foreach (var sportsman in _sportsmen)
-                {
-                    sportsman.Print();
-                }
-            }
-
             public static void Sort(Team[] teams)
             {
                 if (teams == null || teams.Length == 0) return;
@@ -133,23 +124,26 @@ namespace Lab_7
 
             public static Team GetChampion(Team[] teams)
             {
-                if (teams == null || teams.Length == 0) return null;
+                if (teams == null) return null;
 
-                Team answer = null;
-                double maxStrength = 0;
+                Team answer = teams[0];
+                double maxStrength = answer.GetTeamStrength();
 
-                foreach (var team in teams)
+                for(int i=0; i < teams.Length; i++)
                 {
-                    if (team == null) continue;
-
-                    if (team.GetTeamStrength() > maxStrength)
+                    double teamStrength = teams[i].GetTeamStrength();
+                    if (teamStrength > maxStrength)
                     {
-                        answer = team;
-                        maxStrength = team.GetTeamStrength();
+                        maxStrength = teamStrength;
+                        answer = teams[i];
                     }
                 }
-
                 return answer;
+            }
+
+            public void Print()
+            {
+                Console.WriteLine($"Команда: {Name}, Очки: {SummaryScore}, Лучшее место: {TopPlace}");
             }
         }
 
@@ -158,9 +152,7 @@ namespace Lab_7
             public ManTeam(string name) : base(name) { }
 
             protected override double GetTeamStrength()
-            {
-                if (_sportsmen == null || _sportsmen.Length == 0) return 0;
-                
+            {   
                 int sum = 0;
                 int count = 0;
                 foreach (var sportsman in _sportsmen)
@@ -181,8 +173,6 @@ namespace Lab_7
 
             protected override double GetTeamStrength()
             {
-                if (_sportsmen == null || _sportsmen.Length == 0) return 0;
-                
                 int sumPlaces = 0;
                 int productPlaces = 1;
                 int count = 0;
